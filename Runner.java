@@ -93,21 +93,11 @@ public class Runner {
 
     private static void setPresetView(Camera camera, int viewIndex) {
         switch (viewIndex) {
-            case 0:
-                camera.setView(0, 0);
-                break;
-            case 1:
-                camera.setView(Math.toRadians(90), 0);
-                break;
-            case 2:
-                camera.setView(0, Math.toRadians(-80));
-                break;
-            case 3:
-                camera.setView(Math.toRadians(45), Math.toRadians(-30));
-                break;
-            default:
-                camera.reset();
-                break;
+            case 0->camera.setView(0, 0);
+            case 1->camera.setView(Math.toRadians(90), 0);
+            case 2->camera.setView(0, Math.toRadians(-80));
+            case 3->camera.setView(Math.toRadians(45), Math.toRadians(-30));
+            default->camera.reset();
         }
     }
 }
