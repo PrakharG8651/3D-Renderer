@@ -23,7 +23,7 @@ public class Renderer extends JPanel {
         v.y *= factor;
     }
 
-    public void render(List<Triangle> mesh, Matrix3 transform, Camera camera) {
+    public void render(List<Triangle> mesh, Matrix3 transform, Camera camera, boolean shadeEnabled) {
         // Clear Z-Buffer
         for (int i = 0; i < zBuffer.length; i++) zBuffer[i] = Double.POSITIVE_INFINITY;
         
@@ -46,6 +46,8 @@ public class Renderer extends JPanel {
             v2 = camera.apply(v2);
             v3 = camera.apply(v3);
 
+            Color faceColor = shadeEnabled ? shadeColor(t.color, v1, v2, v3) : t.color;
+
             // Apply Perspective Projection
             project(v1, camera.getFocalLength());
             project(v2, camera.getFocalLength());
@@ -56,16 +58,54 @@ public class Renderer extends JPanel {
             v2.x += centerX; v2.y = centerY - v2.y;
             v3.x += centerX; v3.y = centerY - v3.y;
 
-            Triangle projected = new Triangle(v1, v2, v3, t.color);
+            Triangle projected = new Triangle(v1, v2, v3, faceColor);
             projected.edges = new Edge[] {
-                new Edge(v1, v2, t.edges[0].color),
-                new Edge(v2, v3, t.edges[1].color),
-                new Edge(v3, v1, t.edges[2].color)
+                new Edge(v1, v2, shadeEdgeColor(t.edges[0].color, t.color, faceColor)),
+                new Edge(v2, v3, shadeEdgeColor(t.edges[1].color, t.color, faceColor)),
+                new Edge(v3, v1, shadeEdgeColor(t.edges[2].color, t.color, faceColor))
             };
 
             rasterizeTriangle(projected,g2);
         }
         g2.dispose();
+    }
+
+    private Color shadeEdgeColor(Color edgeColor, Color originalFaceColor, Color shadedFaceColor) {
+        if (edgeColor.equals(originalFaceColor)) {
+            return shadedFaceColor;
+        }
+        return edgeColor;
+    }
+
+    private Color shadeColor(Color color, Vertex v1, Vertex v2, Vertex v3) {
+        double ax = v2.x - v1.x;
+        double ay = v2.y - v1.y;
+        double az = v2.z - v1.z;
+        double bx = v3.x - v1.x;
+        double by = v3.y - v1.y;
+        double bz = v3.z - v1.z;
+
+        double normalX = ay * bz - az * by;
+        double normalY = az * bx - ax * bz;
+        double normalZ = ax * by - ay * bx;
+        double normalLength = Math.sqrt(normalX * normalX + normalY * normalY + normalZ * normalZ);
+        if (normalLength == 0) {
+            return color;
+        }
+
+        double facingCamera = Math.abs(normalZ / normalLength);
+        double brightness = 0.35 + 0.65 * facingCamera;
+
+        return new Color(
+            clampColor(color.getRed() * brightness),
+            clampColor(color.getGreen() * brightness),
+            clampColor(color.getBlue() * brightness),
+            color.getAlpha()
+        );
+    }
+
+    private int clampColor(double value) {
+        return Math.max(0, Math.min(255, (int)Math.round(value)));
     }
 
     private double calculateT(int x, int y, int x1, int y1, int x2, int y2) {
