@@ -15,11 +15,32 @@ public class Runner {
         final boolean[] autoRotate = { true };
         final boolean[] shadeEnabled = { true };
         final int[] viewIndex = { 0 };
+        final int[] primitiveIndex = { 0 };
         Camera camera = new Camera();
 
+        List<Color> faceColors = new ArrayList<>();
+        faceColors.add(Color.BLUE);
+        faceColors.add(Color.RED);
+        faceColors.add(Color.GREEN);
+        faceColors.add(Color.YELLOW);
+        faceColors.add(Color.MAGENTA);
+        faceColors.add(Color.CYAN);
+
+        final Mesh[] primitives = {
+            PrimitiveFactory.createCube(100, faceColors),
+            PrimitiveFactory.createCuboid(160, 90, 110, faceColors),
+            PrimitiveFactory.createSphere(75, 18, 36, Color.ORANGE),
+            PrimitiveFactory.createDisc(85, 48, Color.PINK),
+            PrimitiveFactory.createCylinder(70, 130, 40, Color.CYAN, Color.BLUE, Color.GREEN)
+        };
+        final String[] primitiveNames = { "Cube", "Cuboid", "Sphere", "Disc", "Cylinder" };
+        for (Mesh primitive : primitives) {
+            primitive.translate(0, 0, 50);
+        }
+
         // 1. Setup the window
-        JFrame frame = new JFrame("3D Engine");
-        Renderer renderer = new Renderer(800, 600);
+        JFrame frame = new JFrame("3D Engine - " + primitiveNames[primitiveIndex[0]]);
+        Renderer renderer = new Renderer(1920, 1080);
         frame.add(renderer);
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -60,6 +81,18 @@ public class Runner {
                         viewIndex[0] = (viewIndex[0] + 1) % 4;
                         setPresetView(camera, viewIndex[0]);
                         break;
+                    case KeyEvent.VK_P:
+                        primitiveIndex[0] = (primitiveIndex[0] + 1) % primitives.length;
+                        frame.setTitle("3D Engine - " + primitiveNames[primitiveIndex[0]]);
+                        break;
+                    case KeyEvent.VK_1:
+                    case KeyEvent.VK_2:
+                    case KeyEvent.VK_3:
+                    case KeyEvent.VK_4:
+                    case KeyEvent.VK_5:
+                        primitiveIndex[0] = e.getKeyCode() - KeyEvent.VK_1;
+                        frame.setTitle("3D Engine - " + primitiveNames[primitiveIndex[0]]);
+                        break;
                     default:
                         break;
                 }
@@ -67,16 +100,6 @@ public class Runner {
         });
         frame.setVisible(true);
 
-        // 2. Define your cube mesh
-        List<Color> faceColors = new ArrayList<>();
-        faceColors.add(Color.BLUE);
-        faceColors.add(Color.RED);
-        faceColors.add(Color.GREEN);
-        faceColors.add(Color.YELLOW);
-        faceColors.add(Color.MAGENTA);
-        faceColors.add(Color.CYAN);
-        Mesh cubeMesh = PrimitiveFactory.createCube(100, faceColors);
-        cubeMesh.translate(0, 0, 50);
         double angle = 0;
         while (true) {
             if (autoRotate[0]) {
@@ -87,7 +110,7 @@ public class Runner {
             Matrix3 transform = Matrix3.rotationY(angle).multiply(Matrix3.rotationX(angle * 0.5));
             
             // Render the mesh with the rotation matrix
-            renderer.render(cubeMesh.triangles, transform, camera, shadeEnabled[0]);
+            renderer.render(primitives[primitiveIndex[0]].triangles, transform, camera, shadeEnabled[0]);
             
             // Trigger a redraw
             renderer.repaint();
