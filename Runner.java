@@ -14,13 +14,16 @@ public class Runner {
         frame.setVisible(true);
 
         // 2. Define your tetrahedron mesh
-        List<Triangle> mesh = new ArrayList<>();
-        mesh.add(new Triangle(new Vertex(100, 100, 100), new Vertex(-100, -100, 100), new Vertex(-100, 100, -100), Color.WHITE));
-        mesh.add(new Triangle(new Vertex(100, 100, 100), new Vertex(-100, -100, 100), new Vertex(100, -100, -100), Color.RED));
-        mesh.add(new Triangle(new Vertex(-100, 100, -100), new Vertex(100, -100, -100), new Vertex(100, 100, 100), Color.GREEN));
-        mesh.add(new Triangle(new Vertex(-100, 100, -100), new Vertex(100, -100, -100), new Vertex(-100, -100, 100), Color.BLUE));
-
-        // 3. The Animation Loop
+        // In your Runner.java
+        List<Color> faceColors = new ArrayList<>();
+        faceColors.add(Color.BLUE);
+        faceColors.add(Color.RED);
+        faceColors.add(Color.GREEN);
+        faceColors.add(Color.YELLOW);
+        faceColors.add(Color.MAGENTA);
+        faceColors.add(Color.CYAN);
+        Mesh cubeMesh = PrimitiveFactory.createCube(100, faceColors);
+        cubeMesh.translate(0, 0, 50);
         double angle = 0;
         while (true) {
             angle += 0.05;
@@ -29,7 +32,7 @@ public class Runner {
             Matrix3 transform = Matrix3.rotationY(angle).multiply(Matrix3.rotationX(angle * 0.5));
             
             // Render the mesh with the rotation matrix
-            renderer.render(mesh, transform);
+            renderer.render(cubeMesh.triangles, transform);
             
             // Trigger a redraw
             renderer.repaint();
