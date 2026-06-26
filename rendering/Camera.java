@@ -1,3 +1,8 @@
+package rendering;
+
+import rotation.Matrix3;
+import wireframe.Vertex;
+
 public class Camera {
     private double yaw;
     private double pitch;

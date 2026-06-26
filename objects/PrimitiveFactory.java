@@ -1,6 +1,10 @@
+package objects;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
+import wireframe.Triangle;
+import wireframe.Vertex;
 
 public class PrimitiveFactory {
     public static Mesh createCube(double size, List<Color> faceColor) {

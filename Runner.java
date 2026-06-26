@@ -4,6 +4,11 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
+import objects.Mesh;
+import objects.PrimitiveFactory;
+import rendering.Camera;
+import rendering.Renderer;
+import rotation.Matrix3;
 
 public class Runner {
     public static void main(String[] args) {

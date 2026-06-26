@@ -1,6 +1,10 @@
+package objects;
+
 import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
+import wireframe.Triangle;
+import wireframe.Vertex;
 
 public class Mesh {
     public List<Triangle> triangles;

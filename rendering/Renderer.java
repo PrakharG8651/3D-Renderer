@@ -1,7 +1,13 @@
+package rendering;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.swing.*;
+import rotation.Matrix3;
+import wireframe.Edge;
+import wireframe.Triangle;
+import wireframe.Vertex;
 
 public class Renderer extends JPanel {
     private int width, height;

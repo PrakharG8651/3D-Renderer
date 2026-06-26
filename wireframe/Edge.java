@@ -1,3 +1,5 @@
+package wireframe;
+
 import java.awt.Color;
 
 public class Edge {
