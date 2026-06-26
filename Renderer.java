@@ -13,6 +13,13 @@ public class Renderer extends JPanel {
         setPreferredSize(new Dimension(width, height));
     }
 
+    private void project(Vertex v, double cameraDist) {
+        // Scale X and Y based on how far away (Z) the vertex is
+        double factor = cameraDist / (v.z + cameraDist);
+        v.x *= factor;
+        v.y *= factor;
+    }
+
     public void render(List<Triangle> mesh, Matrix3 transform) {
         // Clear Z-Buffer
         for (int i = 0; i < zBuffer.length; i++) zBuffer[i] = Double.NEGATIVE_INFINITY;
@@ -22,16 +29,23 @@ public class Renderer extends JPanel {
         g2.fillRect(0, 0, img.getWidth(), img.getHeight());
         g2.dispose();
 
+        // 2. Render Loop
+        double cameraDist = 400; // Focal length
+        int centerX = img.getWidth() / 2;
+        int centerY = img.getHeight() / 2;
         // Render each triangle
         for (Triangle t : mesh) {
+            // Transform the vertices
             Vertex v1 = transform.transform(t.v1);
             Vertex v2 = transform.transform(t.v2);
             Vertex v3 = transform.transform(t.v3);
-            
+
+            // Apply Perspective Projection
+            project(v1, cameraDist);
+            project(v2, cameraDist);
+            project(v3, cameraDist);
+
             // Offset to screen center
-            int centerX = img.getWidth() / 2;
-            int centerY = img.getHeight() / 2;
-            
             v1.x += centerX; v1.y += centerY;
             v2.x += centerX; v2.y += centerY;
             v3.x += centerX; v3.y += centerY;
