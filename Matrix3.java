@@ -27,4 +27,26 @@ public class Matrix3 {
             in.x * values[2] + in.y * values[5] + in.z * values[8]
         );
     }
+
+    // Factory method for X-axis rotation
+    public static Matrix3 rotationX(double angle) {
+        double c = Math.cos(angle);
+        double s = Math.sin(angle);
+        return new Matrix3(new double[] {
+            1, 0, 0,
+            0, c, -s,
+            0, s, c
+        });
+    }
+
+    // Factory method for Y-axis rotation
+    public static Matrix3 rotationY(double angle) {
+        double c = Math.cos(angle);
+        double s = Math.sin(angle);
+        return new Matrix3(new double[] {
+            c, 0, s,
+            0, 1, 0,
+            -s, 0, c
+        });
+    }
 }
