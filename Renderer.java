@@ -16,16 +16,16 @@ public class Renderer extends JPanel {
         setPreferredSize(new Dimension(width, height));
     }
 
-    private void project(Vertex v, double cameraDist) {
+    private void project(Vertex v, double focalLength) {
         // Scale X and Y based on how far away (Z) the vertex is
-        double factor = cameraDist / (v.z + cameraDist);
+        double factor = focalLength / (v.z + focalLength);
         v.x *= factor;
         v.y *= factor;
     }
 
-    public void render(List<Triangle> mesh, Matrix3 transform) {
+    public void render(List<Triangle> mesh, Matrix3 transform, Camera camera) {
         // Clear Z-Buffer
-        for (int i = 0; i < zBuffer.length; i++) zBuffer[i] = Double.NEGATIVE_INFINITY;
+        for (int i = 0; i < zBuffer.length; i++) zBuffer[i] = Double.POSITIVE_INFINITY;
         
         Graphics2D g2 = img.createGraphics();
         g2.setColor(Color.WHITE);
@@ -33,7 +33,6 @@ public class Renderer extends JPanel {
         g2.dispose();
 
         // 2. Render Loop
-        double cameraDist = 400; // Focal length
         int centerX = img.getWidth() / 2;
         int centerY = img.getHeight() / 2;
         // Render each triangle
@@ -43,15 +42,19 @@ public class Renderer extends JPanel {
             Vertex v2 = transform.transform(t.v2);
             Vertex v3 = transform.transform(t.v3);
 
+            v1 = camera.apply(v1);
+            v2 = camera.apply(v2);
+            v3 = camera.apply(v3);
+
             // Apply Perspective Projection
-            project(v1, cameraDist);
-            project(v2, cameraDist);
-            project(v3, cameraDist);
+            project(v1, camera.getFocalLength());
+            project(v2, camera.getFocalLength());
+            project(v3, camera.getFocalLength());
 
             // Offset to screen center
-            v1.x += centerX; v1.y += centerY;
-            v2.x += centerX; v2.y += centerY;
-            v3.x += centerX; v3.y += centerY;
+            v1.x += centerX; v1.y = centerY - v1.y;
+            v2.x += centerX; v2.y = centerY - v2.y;
+            v3.x += centerX; v3.y = centerY - v3.y;
 
             Triangle projected = new Triangle(v1, v2, v3, t.color);
             projected.edges = new Edge[] {
@@ -96,7 +99,7 @@ public class Renderer extends JPanel {
                 double t = calculateT(x1, y1, startX, startY, x2, y2);
                 double depth = (1 - t) * e.v1.z + t * e.v2.z;
 
-                if (depth >= zBuffer[zIndex]) {
+                if (depth <= zBuffer[zIndex]) {
                     img.setRGB(x1, y1, e.color.getRGB());
                     zBuffer[zIndex] = depth;
                 }
@@ -133,7 +136,7 @@ public class Renderer extends JPanel {
                     int zIndex = y * img.getWidth() + x;
 
                     // 5. Depth test: only draw if closer than current depth
-                    if (depth > zBuffer[zIndex]) {
+                    if (depth < zBuffer[zIndex]) {
                         img.setRGB(x, y, t.color.getRGB());
                         zBuffer[zIndex] = depth;
                     }
