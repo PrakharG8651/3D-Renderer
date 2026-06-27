@@ -27,6 +27,6 @@ public class Runner {
 
         RenderScene scene = new RenderScene(primitives, primitiveNames);
         scene.translateAll(0, 0, 50);
-        RenderLoop.start("3D Engine", scene, 1920, 1080);
+        RenderLoop.start("3D Engine", scene, 800, 600);
     }
 }

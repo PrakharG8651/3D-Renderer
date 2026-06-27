@@ -52,5 +52,9 @@ V          cycle preset views
 R          reset camera
 S          toggle shading
 P          cycle primitive
-1-5        select cube, cuboid, sphere, disc, cylinder
+1          select cube
+2          select cuboid
+3          sphere
+4          select disc
+5          select cylinder
 ```
