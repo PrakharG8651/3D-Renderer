@@ -9,7 +9,7 @@ Runner.java        App entry point
 wireframe/         Basic triangle/wireframe pieces: Vertex, Edge, Triangle
 rotation/          Rotation/math helpers
 objects/           Meshes and primitive shape builders
-rendering/         Camera and software renderer
+rendering/         Camera, controls, render loop, scene state, and software renderer
 Demo/              Individual runnable primitive examples
 build/classes/     Compiled output
 ```
