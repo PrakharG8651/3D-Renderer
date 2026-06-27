@@ -17,6 +17,7 @@ build/classes/     Compiled output
 ## Build
 
 ```powershell
+New-Item -ItemType Directory -Force -Path build/classes | Out-Null
 $sourceFiles = Get-ChildItem src/render3D -Recurse -Filter *.java
 javac -d build/classes $sourceFiles
 ```
@@ -24,6 +25,7 @@ javac -d build/classes $sourceFiles
 To include the primitive demos:
 
 ```powershell
+New-Item -ItemType Directory -Force -Path build/classes | Out-Null
 $sourceFiles = Get-ChildItem src/render3D, Demo -Recurse -Filter *.java
 javac -d build/classes $sourceFiles
 ```
