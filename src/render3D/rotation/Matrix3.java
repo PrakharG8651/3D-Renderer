@@ -1,6 +1,6 @@
-package rotation;
+package render3D.rotation;
 
-import wireframe.Vertex;
+import render3D.wireframe.Vertex;
 
 public class Matrix3 {
     double[] values;

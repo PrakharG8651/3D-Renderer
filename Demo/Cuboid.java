@@ -1,6 +1,6 @@
 import java.awt.Color;
 import java.util.Arrays;
-import objects.PrimitiveFactory;
+import render3D.objects.PrimitiveFactory;
 
 public class Cuboid {
     public static void main(String[] args) {

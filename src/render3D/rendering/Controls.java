@@ -1,4 +1,4 @@
-package rendering;
+package render3D.rendering;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

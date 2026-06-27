@@ -1,4 +1,4 @@
-package wireframe;
+package render3D.wireframe;
 
 import java.awt.Color;
 

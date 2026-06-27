@@ -1,25 +1,31 @@
-package rendering;
+package render3D.rendering;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import javax.swing.*;
-import rotation.Matrix3;
-import wireframe.Edge;
-import wireframe.Triangle;
-import wireframe.Vertex;
+import render3D.rotation.Matrix3;
+import render3D.wireframe.Edge;
+import render3D.wireframe.Triangle;
+import render3D.wireframe.Vertex;
 
 public class Renderer extends JPanel {
+    private static final long serialVersionUID = 1L;
+
     private int width, height;
-    private BufferedImage img;
-    private double[] zBuffer;
+    private transient BufferedImage img;
+    private transient double[] zBuffer;
 
     public Renderer(int width, int height) {
         this.width = width;
         this.height = height;
         img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         zBuffer = new double[width * height];
-        setPreferredSize(new Dimension(width, height));
+    }
+
+    @Override
+    public Dimension getPreferredSize() {
+        return new Dimension(width, height);
     }
 
     private void project(Vertex v, double focalLength) {
@@ -71,9 +77,8 @@ public class Renderer extends JPanel {
                 new Edge(v3, v1, shadeEdgeColor(t.edges[2].color, t.color, faceColor))
             };
 
-            rasterizeTriangle(projected,g2);
+            rasterizeTriangle(projected);
         }
-        g2.dispose();
     }
 
     private Color shadeEdgeColor(Color edgeColor, Color originalFaceColor, Color shadedFaceColor) {
@@ -158,7 +163,7 @@ public class Renderer extends JPanel {
         }
     }
     
-    private void rasterizeTriangle(Triangle t, Graphics2D g2) {
+    private void rasterizeTriangle(Triangle t) {
         // 1. Calculate the bounding box of the triangle
         int minX = (int) Math.max(0, Math.ceil(Math.min(t.v1.x, Math.min(t.v2.x, t.v3.x))));
         int maxX = (int) Math.min(img.getWidth() - 1, Math.floor(Math.max(t.v1.x, Math.max(t.v2.x, t.v3.x))));

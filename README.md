@@ -5,11 +5,11 @@ A small Java/Swing software renderer built from triangles. It currently renders 
 ## Project Structure
 
 ```text
-Runner.java        App entry point
-wireframe/         Basic triangle/wireframe pieces: Vertex, Edge, Triangle
-rotation/          Rotation/math helpers
-objects/           Meshes and primitive shape builders
-rendering/         Camera, controls, render loop, scene state, and software renderer
+src/render3D/Runner.java        App entry point
+src/render3D/wireframe/         Basic triangle/wireframe pieces: Vertex, Edge, Triangle
+src/render3D/rotation/          Rotation/math helpers
+src/render3D/objects/           Meshes and primitive shape builders
+src/render3D/rendering/         Camera, controls, render loop, scene state, and software renderer
 Demo/              Individual runnable primitive examples
 build/classes/     Compiled output
 ```
@@ -17,19 +17,21 @@ build/classes/     Compiled output
 ## Build
 
 ```powershell
-javac -d build/classes Runner.java wireframe/*.java rotation/*.java objects/*.java rendering/*.java
+$sourceFiles = Get-ChildItem src/render3D -Recurse -Filter *.java
+javac -d build/classes $sourceFiles
 ```
 
 To include the primitive demos:
 
 ```powershell
-javac -d build/classes Runner.java wireframe/*.java rotation/*.java objects/*.java rendering/*.java Demo/*.java
+$sourceFiles = Get-ChildItem src/render3D, Demo -Recurse -Filter *.java
+javac -d build/classes $sourceFiles
 ```
 
 ## Run
 
 ```powershell
-java -cp build/classes Runner
+java -cp build/classes render3D.Runner
 ```
 
 Run an individual primitive demo:

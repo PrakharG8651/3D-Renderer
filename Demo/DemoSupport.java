@@ -1,6 +1,6 @@
-import objects.Mesh;
-import rendering.RenderLoop;
-import rendering.RenderScene;
+import render3D.objects.Mesh;
+import render3D.rendering.RenderLoop;
+import render3D.rendering.RenderScene;
 
 public class DemoSupport {
     public static void run(String title, Mesh mesh) {

@@ -1,4 +1,4 @@
-package rendering;
+package render3D.rendering;
 
 import javax.swing.JFrame;
 

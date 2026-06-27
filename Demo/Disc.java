@@ -1,5 +1,5 @@
 import java.awt.Color;
-import objects.PrimitiveFactory;
+import render3D.objects.PrimitiveFactory;
 
 public class Disc {
     public static void main(String[] args) {

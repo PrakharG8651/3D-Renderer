@@ -1,10 +1,11 @@
+package render3D;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
-import objects.Mesh;
-import objects.PrimitiveFactory;
-import rendering.RenderLoop;
-import rendering.RenderScene;
+import render3D.objects.Mesh;
+import render3D.objects.PrimitiveFactory;
+import render3D.rendering.RenderLoop;
+import render3D.rendering.RenderScene;
 
 public class Runner {
     public static void main(String[] args) {

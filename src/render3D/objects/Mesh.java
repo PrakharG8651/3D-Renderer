@@ -1,10 +1,10 @@
-package objects;
+package render3D.objects;
 
-import java.util.List;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import wireframe.Triangle;
-import wireframe.Vertex;
+import render3D.wireframe.Triangle;
+import render3D.wireframe.Vertex;
 
 public class Mesh {
     public List<Triangle> triangles;

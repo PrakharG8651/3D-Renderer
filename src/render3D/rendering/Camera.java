@@ -1,7 +1,7 @@
-package rendering;
+package render3D.rendering;
 
-import rotation.Matrix3;
-import wireframe.Vertex;
+import render3D.rotation.Matrix3;
+import render3D.wireframe.Vertex;
 
 public class Camera {
     private double yaw;

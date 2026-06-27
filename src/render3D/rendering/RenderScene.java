@@ -1,7 +1,7 @@
-package rendering;
+package render3D.rendering;
 
-import objects.Mesh;
-import rotation.Matrix3;
+import render3D.objects.Mesh;
+import render3D.rotation.Matrix3;
 
 public class RenderScene {
     private final Mesh[] meshes;

@@ -1,4 +1,4 @@
-package wireframe;
+package render3D.wireframe;
 
 public class Vertex {
     public double x, y, z;
